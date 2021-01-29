@@ -272,6 +272,22 @@ def test_query_default_mail_sender_settings_not_set(
     assert data["defaultMailSenderAddress"] is None
 
 
+def test_query_category_attributes(site_settings, user_api_client):
+    query = """
+    query {
+        shop {
+            categoryAttributes {
+                name
+            }
+        }
+    }
+    """
+    response = user_api_client.post_graphql(query)
+    content = get_graphql_content(response)
+    data = content["data"]["shop"]
+    assert len(data["categoryAttributes"]) == site_settings.category_attributes.count()
+
+
 def test_shop_digital_content_settings_mutation(
     staff_api_client, site_settings, permission_manage_settings
 ):

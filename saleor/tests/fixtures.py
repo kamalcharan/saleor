@@ -30,6 +30,7 @@ from ..app.types import AppType
 from ..attribute import AttributeEntityType, AttributeInputType, AttributeType
 from ..attribute.models import (
     Attribute,
+    AttributeCategory,
     AttributeTranslation,
     AttributeValue,
     AttributeValueTranslation,
@@ -213,7 +214,7 @@ def sample_gateway(settings):
 
 
 @pytest.fixture(autouse=True)
-def site_settings(db, settings) -> SiteSettings:
+def site_settings(db, settings, page_type_product_reference_attribute) -> SiteSettings:
     """Create a site and matching site settings.
 
     This fixture is autouse because django.contrib.sites.models.Site and
@@ -239,6 +240,10 @@ def site_settings(db, settings) -> SiteSettings:
     obj.top_menu = main_menu
     obj.bottom_menu = secondary_menu
     obj.save()
+    AttributeCategory.objects.create(
+        attribute=page_type_product_reference_attribute,
+        site_settings=obj,
+    )
     return obj
 
 
