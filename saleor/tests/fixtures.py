@@ -504,7 +504,7 @@ def graphql_address_data():
 def customer_user(address):  # pylint: disable=W0613
     default_address = address.get_copy()
     user = User.objects.create_user(
-        "test@example.com",
+        "test_user@example.com",
         "password",
         default_billing_address=default_address,
         default_shipping_address=default_address,
